@@ -9,30 +9,38 @@
       <div @click="pimFilhoVerde" id="pim_verde_filho" :class="{pimFilhoVerdeAnimationBtoA: animationPimVerdeFilhoToA, pimFilhoVerdeAnimationAtoB: animationPimVerdeFilhoToB}"></div>
       <div @click="pimFilhoVermelho" id="pim_vermelho_filho" :class="{pimFilhoVermelhoAnimationBtoA: animationPimVermelhoFilhoToA, pimFilhoVermelhoAnimationAtoB: animationPimVermelhoFilhoToB}"></div>
     </q-page>
+    <Fail id="fail" :show-dialog="failStatus" @replay="replayGame"/>
+    <Winner id="winner" :show-dialog="winnerStatus" @replay="replayGame"/>
   </q-layout>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
+import Fail from "components/Fail";
+import Winner from "components/Winner";
 
 export default defineComponent({
   name: 'MainLayout',
-
+  components: {Winner, Fail},
+  props: ['runIA'],
   watch:{
     iceStatus:{
       handler: function (ice) {
-
         if(ice.pim_azul_pai && !ice.pim_azul_filho){
           console.log('perdeuuu')
+          this.fail();
         }
         if(ice.pim_verde_pai && !ice.pim_verde_filho){
           console.log('perdeuuu')
+          this.fail();
         }
         if(ice.pim_vermelho_pai && !ice.pim_vermelho_filho){
           console.log('perdeuuu')
+          this.fail();
         }
         if(this.pimAzulPai.position === 'A' && this.pimVerdePai.position === 'A' && this.pimVermelhoPai.position === 'A' && this.pimAzulFilho.position === 'A' && this.pimVerdeFilho.position === 'A' && this.pimVermelhoFilho.position === 'A'){
           console.log('ganhouuuu')
+          this.winner();
         }
       },
       deep: true,
@@ -41,27 +49,33 @@ export default defineComponent({
       handler: function (placeA){
         if(placeA.pim_azul_filho && !placeA.pim_azul_pai){
           console.log('A perdeuuu')
+          this.fail();
         }
         if(placeA.pim_verde_filho && !placeA.pim_verde_pai){
           console.log('perdeuuu')
+          this.fail();
         }
         if(placeA.pim_vermelho_filho && !placeA.pim_vermelho_pai){
           console.log('perdeuuu')
+          this.fail();
         }
       },
       deep: true,
     },
     BStatus: {
       handler: function (placeB){
-        // if(placeB.pim_azul_pai && !placeB.pim_azul_filho){
-        //   console.log('B perdeuuu')
-        // }
-        // if(placeB.pim_verde_pai && !placeB.pim_verde_filho){
-        //   console.log('perdeuuu')
-        // }
-        // if(placeB.pim_vermelho_pai && !placeB.pim_vermelho_filho){
-        //   console.log('perdeuuu')
-        // }
+        if(placeB.pim_azul_filho && !placeB.pim_azul_pai){
+          console.log('A perdeuuu')
+          this.fail();
+        }
+        if(placeB.pim_verde_filho && !placeB.pim_verde_pai){
+          console.log('perdeuuu')
+          this.fail();
+        }
+        if(placeB.pim_vermelho_filho && !placeB.pim_vermelho_pai){
+          console.log('perdeuuu')
+          this.fail();
+        }
       },
       deep: true,
     }
@@ -79,7 +93,36 @@ export default defineComponent({
     }
   },
 
+  mounted() {
+    if(this.runIA) {
+      this.IAshow()
+    }
+  },
+
   methods: {
+
+    IAshow(){
+      setTimeout(() => { this.pimFilhoAzul();
+        setTimeout(() => { this.pimFilhoVerde();
+          setTimeout(() => { this.moveIce();
+            setTimeout(() => { this.moveIce();
+              setTimeout(() => { this.IAshow();
+              }, 1000);
+            }, 3000);
+          }, 1000);
+        }, 1000);
+      }, 1000);
+    },
+
+    winner(){
+
+    },
+
+    fail(){
+      if(!this.runIA) {
+        this.failStatus = true;
+      }
+    },
 
     checkPimOnIce(){
       let qts = 0;
@@ -639,7 +682,11 @@ export default defineComponent({
           this.placeB.pim_vermelho_filho = false;
         }
       }
-    }
+    },
+    replayGame(){
+      this.$router.go()
+      this.failStatus = false;
+    },
   },
 
   data(){
@@ -652,6 +699,8 @@ export default defineComponent({
     const pimVerdeFilho = {onIce: false, position: 'B'};
     const pimVermelhoPai = {onIce: false, position: 'B'};
     const pimVermelhoFilho = {onIce: false, position: 'B'};
+    const failStatus = false;
+    const winnerStatus = false;
     return{
       ice: ice,
       animationIceToA: false,
@@ -680,6 +729,9 @@ export default defineComponent({
       animationPimVermelhoPaiToB: false,
       animationPimVermelhoFilhoToA: false,
       animationPimVermelhoFilhoToB: false,
+
+      failStatus: failStatus,
+      winnerStatus: winnerStatus
     }
   }
 
@@ -940,5 +992,14 @@ export default defineComponent({
 @keyframes pimVermelhoFilhoAtoB {
   from {right: 620px; top: 460px}
   to {right: 240px; top: 470px}
+}
+
+#fail{
+  position: absolute;
+  top: 0;
+}
+#winner{
+  position: absolute;
+  top: 0;
 }
 </style>
