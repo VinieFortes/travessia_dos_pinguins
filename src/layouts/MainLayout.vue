@@ -20,8 +20,48 @@ export default defineComponent({
 
   watch:{
     iceStatus:{
-      handler: function (val, oldVal) {
-        console.log(val)
+      handler: function (ice) {
+
+        if(ice.pim_azul_pai && !ice.pim_azul_filho){
+          console.log('perdeuuu')
+        }
+        if(ice.pim_verde_pai && !ice.pim_verde_filho){
+          console.log('perdeuuu')
+        }
+        if(ice.pim_vermelho_pai && !ice.pim_vermelho_filho){
+          console.log('perdeuuu')
+        }
+        if(this.pimAzulPai.position === 'A' && this.pimVerdePai.position === 'A' && this.pimVermelhoPai.position === 'A' && this.pimAzulFilho.position === 'A' && this.pimVerdeFilho.position === 'A' && this.pimVermelhoFilho.position === 'A'){
+          console.log('ganhouuuu')
+        }
+      },
+      deep: true,
+    },
+    AStatus: {
+      handler: function (placeA){
+        if(placeA.pim_azul_filho && !placeA.pim_azul_pai){
+          console.log('A perdeuuu')
+        }
+        if(placeA.pim_verde_filho && !placeA.pim_verde_pai){
+          console.log('perdeuuu')
+        }
+        if(placeA.pim_vermelho_filho && !placeA.pim_vermelho_pai){
+          console.log('perdeuuu')
+        }
+      },
+      deep: true,
+    },
+    BStatus: {
+      handler: function (placeB){
+        // if(placeB.pim_azul_pai && !placeB.pim_azul_filho){
+        //   console.log('B perdeuuu')
+        // }
+        // if(placeB.pim_verde_pai && !placeB.pim_verde_filho){
+        //   console.log('perdeuuu')
+        // }
+        // if(placeB.pim_vermelho_pai && !placeB.pim_vermelho_filho){
+        //   console.log('perdeuuu')
+        // }
       },
       deep: true,
     }
@@ -31,9 +71,26 @@ export default defineComponent({
     iceStatus() {
       return this.ice;
     },
+    AStatus(){
+      return this.placeA;
+    },
+    BStatus(){
+      return this.placeB;
+    }
   },
 
   methods: {
+
+    checkPimOnIce(){
+      let qts = 0;
+      Object.keys(this.ice).forEach((key) =>{
+        if(this.ice[key] === true){
+          qts++;
+        }
+      })
+      return qts;
+    },
+
     moveIce(){
       const ice = document.getElementById('ice');
       const posB = window.getComputedStyle(ice).right === '170px';
@@ -48,37 +105,31 @@ export default defineComponent({
             this.animationPimAzulPaiToA = true;
             this.animationPimAzulPaiToB = false;
             this.pimAzulPai.onIce = true;
-            this.pimAzulPai.position = 'A';
           }
           if(this.ice.pim_azul_filho){
             this.animationPimAzulFilhoToA = true;
             this.animationPimAzulFilhoToB = false;
             this.pimAzulFilho.onIce = true;
-            this.pimAzulFilho.position = 'A';
           }
           if(this.ice.pim_verde_pai){
             this.animationPimVerdePaiToA = true;
             this.animationPimVerdePaiToB = false;
             this.pimVerdePai.onIce = true;
-            this.pimVerdePai.position = 'A';
           }
           if(this.ice.pim_verde_filho){
             this.animationPimVerdeFilhoToA = true;
             this.animationPimVerdeFilhoToB = false;
             this.pimVerdeFilho.onIce = true;
-            this.pimVerdeFilho.position = 'A';
           }
           if(this.ice.pim_vermelho_pai){
             this.animationPimVermelhoPaiToA = true;
             this.animationPimVermelhoPaiToB = false;
             this.pimVermelhoPai.onIce = true;
-            this.pimVermelhoPai.position = 'A';
           }
           if(this.ice.pim_vermelho_filho){
             this.animationPimVermelhoFilhoToA = true;
             this.animationPimVermelhoFilhoToB = false;
             this.pimVermelhoFilho.onIce = true;
-            this.pimVermelhoFilho.position = 'A';
           }
         }
         if(posA){
@@ -140,7 +191,7 @@ export default defineComponent({
      const posA = window.getComputedStyle(pinPaiAzul).top === '330px' && window.getComputedStyle(pinPaiAzul).right === '750px';
      if (posB){
        // B to Ice
-       if(this.ice.position === 'B'){
+       if(this.ice.position === 'B' && (this.checkPimOnIce() < 2)){
          this.animationPimAzulPaiToB = false;
          this.animationPimAzulPaiToA = false;
          let posTop = 360;
@@ -149,6 +200,10 @@ export default defineComponent({
          pinPaiAzul.style.right = posRight + 'px';
          pinPaiAzul.style.zIndex = '1';
          this.ice.pim_azul_pai = true;
+
+         //set position
+         this.placeA.pim_azul_pai = false;
+         this.placeB.pim_azul_pai = false;
        }
      }
      if(posIceB) {
@@ -162,6 +217,11 @@ export default defineComponent({
        pinPaiAzul.style.zIndex = '0';
        pinPaiAzul.style.transform = 'scaleX(1)';
        this.ice.pim_azul_pai = false;
+
+       // set position
+       this.pimAzulPai.position = 'B';
+       this.placeA.pim_azul_pai = false;
+       this.placeB.pim_azul_pai = true;
      }
      if(posIceA){
        // Ice to A
@@ -174,10 +234,15 @@ export default defineComponent({
        pinPaiAzul.style.zIndex = '0';
        pinPaiAzul.style.transform = 'scaleX(-1)';
        this.ice.pim_azul_pai = false;
+
+       // set position
+       this.pimAzulPai.position = 'A';
+       this.placeA.pim_azul_pai = true;
+       this.placeB.pim_azul_pai = false;
      }
       if (posA){
         // A to Ice
-        if(this.ice.position === 'A'){
+        if(this.ice.position === 'A'  && (this.checkPimOnIce() < 2)){
           this.animationPimAzulPaiToB = false;
           this.animationPimAzulPaiToA = false;
           let posTop = 350;
@@ -186,6 +251,10 @@ export default defineComponent({
           pinPaiAzul.style.right = posRight + 'px';
           pinPaiAzul.style.zIndex = '1';
           this.ice.pim_azul_pai = true;
+
+          //set position
+          this.placeA.pim_azul_pai = false;
+          this.placeB.pim_azul_pai = false;
         }
       }
     },
@@ -198,7 +267,7 @@ export default defineComponent({
       const posA = window.getComputedStyle (pinFilhoAzul).top === '380px' && window.getComputedStyle (pinFilhoAzul).right === '750px';
       if (posB) {
         // B to Ice
-        if(this.ice.position === 'B') {
+        if(this.ice.position === 'B'  && (this.checkPimOnIce() < 2)) {
           this.animationPimAzulFilhoToB = false;
           this.animationPimAzulFilhoToA = false;
           let posTop = 410;
@@ -207,6 +276,10 @@ export default defineComponent({
           pinFilhoAzul.style.right = posRight + 'px';
           pinFilhoAzul.style.zIndex = '1';
           this.ice.pim_azul_filho = true;
+
+          //set position
+          this.placeA.pim_azul_filho = false;
+          this.placeB.pim_azul_filho = false;
         }
       }
       if (posIceB) {
@@ -220,6 +293,11 @@ export default defineComponent({
         pinFilhoAzul.style.zIndex = '1';
         pinFilhoAzul.style.transform = 'scaleX(1)';
         this.ice.pim_azul_filho = false;
+
+        // set position
+        this.pimAzulFilho.position = 'B';
+        this.placeA.pim_azul_filho = false;
+        this.placeB.pim_azul_filho = true;
       }
       if (posIceA) {
         // Ice to A
@@ -232,10 +310,16 @@ export default defineComponent({
         pinFilhoAzul.style.zIndex = '0';
         pinFilhoAzul.style.transform = 'scaleX(-1)';
         this.ice.pim_azul_filho = false;
+        this.pimAzulFilho.position = 'A';
+
+        // set position
+        this.pimAzulFilho.position = 'A';
+        this.placeA.pim_azul_filho = true;
+        this.placeB.pim_azul_filho = false;
       }
       if (posA) {
         // A to Ice
-        if (this.ice.position === 'A') {
+        if (this.ice.position === 'A'  && (this.checkPimOnIce() < 2)) {
           this.animationPimAzulFilhoToB = false;
           this.animationPimAzulFilhoToA = false;
           let posTop = 400;
@@ -244,6 +328,10 @@ export default defineComponent({
           pinFilhoAzul.style.right = posRight + 'px';
           pinFilhoAzul.style.zIndex = '1';
           this.ice.pim_azul_filho = true;
+
+          //set position
+          this.placeA.pim_azul_filho = false;
+          this.placeB.pim_azul_filho = false;
         }
       }
     },
@@ -257,7 +345,7 @@ export default defineComponent({
       const posA = window.getComputedStyle(pinPaiVerde).top === '370px' && window.getComputedStyle(pinPaiVerde).right === '780px';
       if (posB){
         // B to Ice
-        if(this.ice.position === 'B'){
+        if(this.ice.position === 'B'  && (this.checkPimOnIce() < 2)){
           this.animationPimVerdePaiToB = false;
           this.animationPimVerdePaiToA = false;
           let posTop = 400;
@@ -266,6 +354,10 @@ export default defineComponent({
           pinPaiVerde.style.right = posRight + 'px';
           pinPaiVerde.style.zIndex = '2';
           this.ice.pim_verde_pai = true;
+
+          //set position
+          this.placeA.pim_verde_pai = false;
+          this.placeB.pim_verde_pai = false;
         }
       }
       if(posIceB) {
@@ -279,6 +371,11 @@ export default defineComponent({
         pinPaiVerde.style.zIndex = '0';
         pinPaiVerde.style.transform = 'scaleX(1)';
         this.ice.pim_verde_pai = false;
+
+        // set position
+        this.pimVerdePai.position = 'B';
+        this.placeA.pim_verde_pai = false;
+        this.placeB.pim_verde_pai = true;
       }
       if(posIceA){
         // Ice to A
@@ -291,10 +388,15 @@ export default defineComponent({
         pinPaiVerde.style.zIndex = '0';
         pinPaiVerde.style.transform = 'scaleX(-1)';
         this.ice.pim_verde_pai = false;
+
+        // set position
+        this.pimVerdePai.position = 'A';
+        this.placeA.pim_verde_pai = true;
+        this.placeB.pim_verde_pai = false;
       }
       if (posA){
         // A to Ice
-        if(this.ice.position === 'A'){
+        if(this.ice.position === 'A'  && (this.checkPimOnIce() < 2)){
           this.animationPimVerdePaiToB = false;
           this.animationPimVerdePaiToA = false;
           let posTop = 390;
@@ -303,6 +405,10 @@ export default defineComponent({
           pinPaiVerde.style.right = posRight + 'px';
           pinPaiVerde.style.zIndex = '2';
           this.ice.pim_verde_pai = true;
+
+          //set position
+          this.placeA.pim_verde_pai = false;
+          this.placeB.pim_verde_pai = false;
         }
       }
     },
@@ -315,7 +421,7 @@ export default defineComponent({
       const posA = window.getComputedStyle (pinFilhoVerde).top === '420px' && window.getComputedStyle (pinFilhoVerde).right === '770px';
       if (posB) {
         // B to Ice
-        if(this.ice.position === 'B') {
+        if(this.ice.position === 'B'  && (this.checkPimOnIce() < 2)) {
           this.animationPimVerdeFilhoToB = false;
           this.animationPimVerdeFilhoToA = false;
           let posTop = 440;
@@ -324,6 +430,10 @@ export default defineComponent({
           pinFilhoVerde.style.right = posRight + 'px';
           pinFilhoVerde.style.zIndex = '2';
           this.ice.pim_verde_filho = true;
+
+          //set position
+          this.placeA.pim_verde_filho = false;
+          this.placeB.pim_verde_filho = false;
         }
       }
       if (posIceB) {
@@ -337,6 +447,11 @@ export default defineComponent({
         pinFilhoVerde.style.zIndex = '2';
         pinFilhoVerde.style.transform = 'scaleX(1)';
         this.ice.pim_verde_filho = false;
+
+        // set position
+        this.pimVerdeFilho.position = 'B';
+        this.placeA.pim_verde_filho = false;
+        this.placeB.pim_verde_filho = true;
       }
       if (posIceA) {
         // Ice to A
@@ -349,10 +464,15 @@ export default defineComponent({
         pinFilhoVerde.style.zIndex = '0';
         pinFilhoVerde.style.transform = 'scaleX(-1)';
         this.ice.pim_verde_filho = false;
+
+        // set position
+        this.pimVerdeFilho.position = 'A';
+        this.placeA.pim_verde_filho = true;
+        this.placeB.pim_verde_filho = false;
       }
       if (posA) {
         // A to Ice
-        if (this.ice.position === 'A') {
+        if (this.ice.position === 'A'  && (this.checkPimOnIce() < 2)) {
           this.animationPimVerdeFilhoToB = false;
           this.animationPimVerdeFilhoToA = false;
           let posTop = 430;
@@ -361,6 +481,10 @@ export default defineComponent({
           pinFilhoVerde.style.right = posRight + 'px';
           pinFilhoVerde.style.zIndex = '2';
           this.ice.pim_verde_filho = true;
+
+          //set position
+          this.placeA.pim_verde_filho = false;
+          this.placeB.pim_verde_filho = false;
         }
       }
     },
@@ -373,7 +497,7 @@ export default defineComponent({
       const posA = window.getComputedStyle(pinPaiVermelho).top === '420px' && window.getComputedStyle(pinPaiVermelho).right === '830px';
       if (posB){
         // B to Ice
-        if(this.ice.position === 'B'){
+        if(this.ice.position === 'B'  && (this.checkPimOnIce() < 2)){
           this.animationPimVermelhoPaiToB = false;
           this.animationPimVermelhoPaiToA = false;
           let posTop = 430;
@@ -382,6 +506,10 @@ export default defineComponent({
           pinPaiVermelho.style.right = posRight + 'px';
           pinPaiVermelho.style.zIndex = '3';
           this.ice.pim_vermelho_pai = true;
+
+          //set position
+          this.placeA.pim_vermelho_pai = false;
+          this.placeB.pim_vermelho_pai = false;
         }
       }
       if(posIceB) {
@@ -395,6 +523,11 @@ export default defineComponent({
         pinPaiVermelho.style.zIndex = '0';
         pinPaiVermelho.style.transform = 'scaleX(1)';
         this.ice.pim_vermelho_pai = false;
+
+        // set position
+        this.pimVermelhoPai.position = 'B';
+        this.placeA.pim_vermelho_pai = false;
+        this.placeB.pim_vermelho_pai = true;
       }
       if(posIceA){
         // Ice to A
@@ -407,10 +540,15 @@ export default defineComponent({
         pinPaiVermelho.style.zIndex = '0';
         pinPaiVermelho.style.transform = 'scaleX(-1)';
         this.ice.pim_vermelho_pai = false;
+
+        // set position
+        this.pimVermelhoPai.position = 'A';
+        this.placeA.pim_vermelho_pai = true;
+        this.placeB.pim_vermelho_pai = false;
       }
       if (posA){
         // A to Ice
-        if(this.ice.position === 'A'){
+        if(this.ice.position === 'A'  && (this.checkPimOnIce() < 2)){
           this.animationPimVermelhoPaiToB = false;
           this.animationPimVermelhoPaiToA = false;
           let posTop = 420;
@@ -419,6 +557,10 @@ export default defineComponent({
           pinPaiVermelho.style.right = posRight + 'px';
           pinPaiVermelho.style.zIndex = '3';
           this.ice.pim_vermelho_pai = true;
+
+          //set position
+          this.placeA.pim_vermelho_pai = false;
+          this.placeB.pim_vermelho_pai = false;
         }
       }
     },
@@ -431,7 +573,7 @@ export default defineComponent({
       const posA = window.getComputedStyle (pinFilhoVermelho).top === '460px' && window.getComputedStyle (pinFilhoVermelho).right === '820px';
       if (posB) {
         // B to Ice
-        if(this.ice.position === 'B') {
+        if(this.ice.position === 'B'  && (this.checkPimOnIce() < 2)) {
           this.animationPimVermelhoFilhoToB = false;
           this.animationPimVermelhoFilhoToA = false;
           let posTop = 470;
@@ -440,6 +582,10 @@ export default defineComponent({
           pinFilhoVermelho.style.right = posRight + 'px';
           pinFilhoVermelho.style.zIndex = '3';
           this.ice.pim_vermelho_filho = true;
+
+          //set position
+          this.placeA.pim_vermelho_filho = false;
+          this.placeB.pim_vermelho_filho = false;
         }
       }
       if (posIceB) {
@@ -453,6 +599,11 @@ export default defineComponent({
         pinFilhoVermelho.style.zIndex = '3';
         pinFilhoVermelho.style.transform = 'scaleX(1)';
         this.ice.pim_vermelho_filho = false;
+
+        // set position
+        this.pimVermelhoFilho.position = 'B';
+        this.placeA.pim_vermelho_filho = false;
+        this.placeB.pim_vermelho_filho = true;
       }
       if (posIceA) {
         // Ice to A
@@ -465,10 +616,15 @@ export default defineComponent({
         pinFilhoVermelho.style.zIndex = '0';
         pinFilhoVermelho.style.transform = 'scaleX(-1)';
         this.ice.pim_vermelho_filho = false;
+
+        // set position
+        this.pimVermelhoFilho.position = 'A';
+        this.placeA.pim_vermelho_filho = true;
+        this.placeB.pim_vermelho_filho = false;
       }
       if (posA) {
         // A to Ice
-        if (this.ice.position === 'A') {
+        if (this.ice.position === 'A'  && (this.checkPimOnIce() < 2)) {
           this.animationPimVermelhoFilhoToB = false;
           this.animationPimVermelhoFilhoToA = false;
           let posTop = 460;
@@ -477,13 +633,19 @@ export default defineComponent({
           pinFilhoVermelho.style.right = posRight + 'px';
           pinFilhoVermelho.style.zIndex = '3';
           this.ice.pim_vermelho_filho = true;
+
+          //set position
+          this.placeA.pim_vermelho_filho = false;
+          this.placeB.pim_vermelho_filho = false;
         }
       }
     }
   },
 
   data(){
-    const ice = {position: 'B', pim_azul_pai: false, pim_azul_filho: false, pim_verde_pai: false, pim_verde_filho: false, pim_vermelho_pai: false, pim_vermelho_filho: false};
+    const ice = {qts: 0, position: 'B', pim_azul_pai: false, pim_azul_filho: false, pim_verde_pai: false, pim_verde_filho: false, pim_vermelho_pai: false, pim_vermelho_filho: false};
+    const placeA = {pim_azul_pai: false, pim_azul_filho: false, pim_verde_pai: false, pim_verde_filho: false, pim_vermelho_pai: false, pim_vermelho_filho: false};
+    const placeB = {pim_azul_pai: true, pim_azul_filho: true, pim_verde_pai: true, pim_verde_filho: true, pim_vermelho_pai: true, pim_vermelho_filho: true};
     const pimAzulPai = {onIce: false, position: 'B'};
     const pimAzulFilho = {onIce: false, position: 'B'};
     const pimVerdePai = {onIce: false, position: 'B'};
@@ -494,6 +656,9 @@ export default defineComponent({
       ice: ice,
       animationIceToA: false,
       animationIceToB: false,
+
+      placeA: placeA,
+      placeB: placeB,
 
       pimAzulPai: pimAzulPai,
       pimAzulFilho: pimAzulFilho,
