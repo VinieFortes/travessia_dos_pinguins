@@ -1,6 +1,9 @@
 <template>
   <q-layout id="full">
     <q-page id="body">
+      <div class="flex column">
+        <span style="font-family: Snow,serif; font-size: 20px">Clicks: {{clicks}}</span>
+      </div>
       <div @click="moveIce" id="ice" :class="{iceAnimationBtoA: animationIceToA, iceAnimationAtoB: animationIceToB}"></div>
       <div @click="pimPaiAzul" id="pim_azul_pai" :class="{pimPaiAzulAnimationBtoA: animationPimAzulPaiToA, pimPaiAzulAnimationAtoB: animationPimAzulPaiToB}"></div>
       <div @click="pimPaiVerde" id="pim_verde_pai" :class="{pimPaiVerdeAnimationBtoA: animationPimVerdePaiToA, pimPaiVerdeAnimationAtoB: animationPimVerdePaiToB}"></div>
@@ -115,7 +118,7 @@ export default defineComponent({
     },
 
     winner(){
-
+      this.winnerStatus = true;
     },
 
     fail(){
@@ -135,6 +138,7 @@ export default defineComponent({
     },
 
     moveIce(){
+      this.clicks= this.clicks + 1;
       const ice = document.getElementById('ice');
       const posB = window.getComputedStyle(ice).right === '170px';
       const posA = window.getComputedStyle(ice).right === '555px';
@@ -226,6 +230,7 @@ export default defineComponent({
     },
 
     pimPaiAzul(){
+     this.clicks= this.clicks + 1;
      const pinPaiAzul = document.getElementById('pim_azul_pai');
      console.log(window.getComputedStyle(pinPaiAzul).top + window.getComputedStyle(pinPaiAzul).right)
      const posB = window.getComputedStyle(pinPaiAzul).top === '350px' && window.getComputedStyle(pinPaiAzul).right === '150px';
@@ -302,6 +307,7 @@ export default defineComponent({
       }
     },
     pimFilhoAzul() {
+      this.clicks= this.clicks + 1;
       const pinFilhoAzul = document.getElementById ('pim_azul_filho');
       console.log (window.getComputedStyle (pinFilhoAzul).top + window.getComputedStyle (pinFilhoAzul).right)
       const posB = window.getComputedStyle (pinFilhoAzul).top === '400px' && window.getComputedStyle (pinFilhoAzul).right === '150px';
@@ -380,6 +386,7 @@ export default defineComponent({
     },
 
     pimPaiVerde(){
+      this.clicks= this.clicks + 1;
       const pinPaiVerde = document.getElementById('pim_verde_pai');
       console.log(window.getComputedStyle(pinPaiVerde).top + window.getComputedStyle(pinPaiVerde).right)
       const posB = window.getComputedStyle(pinPaiVerde).top === '390px' && window.getComputedStyle(pinPaiVerde).right === '80px';
@@ -456,6 +463,7 @@ export default defineComponent({
       }
     },
     pimFilhoVerde(){
+      this.clicks= this.clicks + 1;
       const pinFilhoVerde = document.getElementById ('pim_verde_filho');
       console.log (window.getComputedStyle (pinFilhoVerde).top + window.getComputedStyle (pinFilhoVerde).right)
       const posB = window.getComputedStyle (pinFilhoVerde).top === '430px' && window.getComputedStyle (pinFilhoVerde).right === '90px';
@@ -532,6 +540,7 @@ export default defineComponent({
       }
     },
     pimPaiVermelho(){
+      this.clicks= this.clicks + 1;
       const pinPaiVermelho = document.getElementById('pim_vermelho_pai');
       console.log(window.getComputedStyle(pinPaiVermelho).top + window.getComputedStyle(pinPaiVermelho).right)
       const posB = window.getComputedStyle(pinPaiVermelho).top === '420px' && window.getComputedStyle(pinPaiVermelho).right === '30px';
@@ -608,6 +617,7 @@ export default defineComponent({
       }
     },
     pimFilhoVermelho(){
+      this.clicks= this.clicks + 1;
       const pinFilhoVermelho = document.getElementById ('pim_vermelho_filho');
       console.log (window.getComputedStyle (pinFilhoVermelho).top + window.getComputedStyle (pinFilhoVermelho).right)
       const posB = window.getComputedStyle (pinFilhoVermelho).top === '460px' && window.getComputedStyle (pinFilhoVermelho).right === '40px';
@@ -701,6 +711,8 @@ export default defineComponent({
     const pimVermelhoFilho = {onIce: false, position: 'B'};
     const failStatus = false;
     const winnerStatus = false;
+    const clicks = 0;
+    const tempo = 0;
     return{
       ice: ice,
       animationIceToA: false,
@@ -731,7 +743,9 @@ export default defineComponent({
       animationPimVermelhoFilhoToB: false,
 
       failStatus: failStatus,
-      winnerStatus: winnerStatus
+      winnerStatus: winnerStatus,
+      clicks: clicks,
+      tempo: tempo
     }
   }
 
