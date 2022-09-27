@@ -759,7 +759,6 @@ export default defineComponent({
 #body{
   background-image: url("src/assets/background.jpg");
   background-repeat: no-repeat;
-  background-position: center;
   width: 998px;
   height: 701px;
   margin: 0 auto;
