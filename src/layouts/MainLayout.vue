@@ -3,17 +3,17 @@
     <q-page id="body">
       <div @click="moveIce" id="ice" :class="{iceAnimationBtoA: animationIceToA, iceAnimationAtoB: animationIceToB}"></div>
       <div @click="pimPaiAzul" id="pim_azul_pai" :class="{pimPaiAzulAnimationBtoA: animationPimAzulPaiToA, pimPaiAzulAnimationAtoB: animationPimAzulPaiToB}"></div>
-      <div @click="pimPaiVerde" id="pim_verde_pai" :class="{pimPaiAnimationBtoA: animationPimVerdePaiToA, pimPaiAnimationAtoB: animationPimVerdePaiToB}"></div>
-      <div id="pim_vermelho_pai"></div>
+      <div @click="pimPaiVerde" id="pim_verde_pai" :class="{pimPaiVerdeAnimationBtoA: animationPimVerdePaiToA, pimPaiVerdeAnimationAtoB: animationPimVerdePaiToB}"></div>
+      <div @click="pimPaiVermelho" id="pim_vermelho_pai" :class="{pimPaiVermelhoAnimationBtoA: animationPimVermelhoPaiToA, pimPaiVermelhoAnimationAtoB: animationPimVermelhoPaiToB}"></div>
       <div @click="pimFilhoAzul" id="pim_azul_filho" :class="{pimFilhoAzulAnimationBtoA: animationPimAzulFilhoToA, pimFilhoAzulAnimationAtoB: animationPimAzulFilhoToB}"></div>
-      <div id="pim_verde_filho"></div>
-      <div id="pim_vermelho_filho"></div>
+      <div @click="pimFilhoVerde" id="pim_verde_filho" :class="{pimFilhoVerdeAnimationBtoA: animationPimVerdeFilhoToA, pimFilhoVerdeAnimationAtoB: animationPimVerdeFilhoToB}"></div>
+      <div @click="pimFilhoVermelho" id="pim_vermelho_filho" :class="{pimFilhoVermelhoAnimationBtoA: animationPimVermelhoFilhoToA, pimFilhoVermelhoAnimationAtoB: animationPimVermelhoFilhoToB}"></div>
     </q-page>
   </q-layout>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -62,6 +62,24 @@ export default defineComponent({
             this.pimVerdePai.onIce = true;
             this.pimVerdePai.position = 'A';
           }
+          if(this.ice.pim_verde_filho){
+            this.animationPimVerdeFilhoToA = true;
+            this.animationPimVerdeFilhoToB = false;
+            this.pimVerdeFilho.onIce = true;
+            this.pimVerdeFilho.position = 'A';
+          }
+          if(this.ice.pim_vermelho_pai){
+            this.animationPimVermelhoPaiToA = true;
+            this.animationPimVermelhoPaiToB = false;
+            this.pimVermelhoPai.onIce = true;
+            this.pimVermelhoPai.position = 'A';
+          }
+          if(this.ice.pim_vermelho_filho){
+            this.animationPimVermelhoFilhoToA = true;
+            this.animationPimVermelhoFilhoToB = false;
+            this.pimVermelhoFilho.onIce = true;
+            this.pimVermelhoFilho.position = 'A';
+          }
         }
         if(posA){
           this.animationIceToA = false;
@@ -87,6 +105,27 @@ export default defineComponent({
             this.animationPimVerdePaiToA = false;
             this.pimVerdePai.onIce = true;
             this.pimVerdePai.position = 'B';
+          }
+
+          if(this.ice.pim_verde_filho){
+            this.animationPimVerdeFilhoToB = true;
+            this.animationPimVerdeFilhoToA = false;
+            this.pimVerdeFilho.onIce = true;
+            this.pimVerdeFilho.position = 'B';
+          }
+
+          if(this.ice.pim_vermelho_pai){
+            this.animationPimVermelhoPaiToB = true;
+            this.animationPimVermelhoPaiToA = false;
+            this.pimVermelhoPai.onIce = true;
+            this.pimVermelhoPai.position = 'B';
+          }
+
+          if(this.ice.pim_vermelho_filho){
+            this.animationPimVermelhoFilhoToB = true;
+            this.animationPimVermelhoFilhoToA = false;
+            this.pimVermelhoFilho.onIce = true;
+            this.pimVermelhoFilho.position = 'B';
           }
         }
       }
@@ -213,19 +252,19 @@ export default defineComponent({
       const pinPaiVerde = document.getElementById('pim_verde_pai');
       console.log(window.getComputedStyle(pinPaiVerde).top + window.getComputedStyle(pinPaiVerde).right)
       const posB = window.getComputedStyle(pinPaiVerde).top === '390px' && window.getComputedStyle(pinPaiVerde).right === '80px';
-      const posIceB = window.getComputedStyle(pinPaiVerde).top === '360px' && window.getComputedStyle(pinPaiVerde).right === '230px';
-      const posIceA = window.getComputedStyle(pinPaiVerde).top === '340px' && window.getComputedStyle(pinPaiVerde).right === '600px';
+      const posIceB = window.getComputedStyle(pinPaiVerde).top === '400px' && (window.getComputedStyle(pinPaiVerde).right === '230px' || window.getComputedStyle(pinPaiVerde).right === '280px');
+      const posIceA = window.getComputedStyle(pinPaiVerde).top === '390px' && (window.getComputedStyle(pinPaiVerde).right === '610px' || window.getComputedStyle(pinPaiVerde).right === '660px');
       const posA = window.getComputedStyle(pinPaiVerde).top === '370px' && window.getComputedStyle(pinPaiVerde).right === '780px';
       if (posB){
         // B to Ice
         if(this.ice.position === 'B'){
           this.animationPimVerdePaiToB = false;
           this.animationPimVerdePaiToA = false;
-          let posTop = 360;
+          let posTop = 400;
           let posRight = 230;
           pinPaiVerde.style.top = posTop + 'px';
           pinPaiVerde.style.right = posRight + 'px';
-          pinPaiVerde.style.zIndex = '1';
+          pinPaiVerde.style.zIndex = '2';
           this.ice.pim_verde_pai = true;
         }
       }
@@ -258,12 +297,186 @@ export default defineComponent({
         if(this.ice.position === 'A'){
           this.animationPimVerdePaiToB = false;
           this.animationPimVerdePaiToA = false;
-          let posTop = 340;
-          let posRight = 600;
+          let posTop = 390;
+          let posRight = 660;
           pinPaiVerde.style.top = posTop + 'px';
           pinPaiVerde.style.right = posRight + 'px';
-          pinPaiVerde.style.zIndex = '1';
+          pinPaiVerde.style.zIndex = '2';
           this.ice.pim_verde_pai = true;
+        }
+      }
+    },
+    pimFilhoVerde(){
+      const pinFilhoVerde = document.getElementById ('pim_verde_filho');
+      console.log (window.getComputedStyle (pinFilhoVerde).top + window.getComputedStyle (pinFilhoVerde).right)
+      const posB = window.getComputedStyle (pinFilhoVerde).top === '430px' && window.getComputedStyle (pinFilhoVerde).right === '90px';
+      const posIceB = window.getComputedStyle (pinFilhoVerde).top === '440px' && window.getComputedStyle (pinFilhoVerde).right === '240px';
+      const posIceA = window.getComputedStyle (pinFilhoVerde).top === '430px' && (window.getComputedStyle (pinFilhoVerde).right === '620px' || window.getComputedStyle (pinFilhoVerde).right === '640px');
+      const posA = window.getComputedStyle (pinFilhoVerde).top === '420px' && window.getComputedStyle (pinFilhoVerde).right === '770px';
+      if (posB) {
+        // B to Ice
+        if(this.ice.position === 'B') {
+          this.animationPimVerdeFilhoToB = false;
+          this.animationPimVerdeFilhoToA = false;
+          let posTop = 440;
+          let posRight = 240;
+          pinFilhoVerde.style.top = posTop + 'px';
+          pinFilhoVerde.style.right = posRight + 'px';
+          pinFilhoVerde.style.zIndex = '2';
+          this.ice.pim_verde_filho = true;
+        }
+      }
+      if (posIceB) {
+        // Ice to B
+        this.animationPimVerdeFilhoToB = false;
+        this.animationPimVerdeFilhoToA = false;
+        let posTop = 430;
+        let posRight = 90;
+        pinFilhoVerde.style.top = posTop + 'px';
+        pinFilhoVerde.style.right = posRight + 'px';
+        pinFilhoVerde.style.zIndex = '2';
+        pinFilhoVerde.style.transform = 'scaleX(1)';
+        this.ice.pim_verde_filho = false;
+      }
+      if (posIceA) {
+        // Ice to A
+        this.animationPimVerdeFilhoToB = false;
+        this.animationPimVerdeFilhoToA = false;
+        let posTop = 420;
+        let posRight = 770;
+        pinFilhoVerde.style.top = posTop + 'px';
+        pinFilhoVerde.style.right = posRight + 'px';
+        pinFilhoVerde.style.zIndex = '0';
+        pinFilhoVerde.style.transform = 'scaleX(-1)';
+        this.ice.pim_verde_filho = false;
+      }
+      if (posA) {
+        // A to Ice
+        if (this.ice.position === 'A') {
+          this.animationPimVerdeFilhoToB = false;
+          this.animationPimVerdeFilhoToA = false;
+          let posTop = 430;
+          let posRight = 640;
+          pinFilhoVerde.style.top = posTop + 'px';
+          pinFilhoVerde.style.right = posRight + 'px';
+          pinFilhoVerde.style.zIndex = '2';
+          this.ice.pim_verde_filho = true;
+        }
+      }
+    },
+    pimPaiVermelho(){
+      const pinPaiVermelho = document.getElementById('pim_vermelho_pai');
+      console.log(window.getComputedStyle(pinPaiVermelho).top + window.getComputedStyle(pinPaiVermelho).right)
+      const posB = window.getComputedStyle(pinPaiVermelho).top === '420px' && window.getComputedStyle(pinPaiVermelho).right === '30px';
+      const posIceB = window.getComputedStyle(pinPaiVermelho).top === '430px' && (window.getComputedStyle(pinPaiVermelho).right === '200px' || window.getComputedStyle(pinPaiVermelho).right === '280px');
+      const posIceA = window.getComputedStyle(pinPaiVermelho).top === '420px' && (window.getComputedStyle(pinPaiVermelho).right === '650px' || window.getComputedStyle(pinPaiVermelho).right === '600px');
+      const posA = window.getComputedStyle(pinPaiVermelho).top === '420px' && window.getComputedStyle(pinPaiVermelho).right === '830px';
+      if (posB){
+        // B to Ice
+        if(this.ice.position === 'B'){
+          this.animationPimVermelhoPaiToB = false;
+          this.animationPimVermelhoPaiToA = false;
+          let posTop = 430;
+          let posRight = 200;
+          pinPaiVermelho.style.top = posTop + 'px';
+          pinPaiVermelho.style.right = posRight + 'px';
+          pinPaiVermelho.style.zIndex = '3';
+          this.ice.pim_vermelho_pai = true;
+        }
+      }
+      if(posIceB) {
+        // Ice to B
+        this.animationPimVermelhoPaiToB = false;
+        this.animationPimVermelhoPaiToA = false;
+        let posTop = 420;
+        let posRight = 30;
+        pinPaiVermelho.style.top = posTop + 'px';
+        pinPaiVermelho.style.right = posRight + 'px';
+        pinPaiVermelho.style.zIndex = '0';
+        pinPaiVermelho.style.transform = 'scaleX(1)';
+        this.ice.pim_vermelho_pai = false;
+      }
+      if(posIceA){
+        // Ice to A
+        this.animationPimVermelhoPaiToB = false;
+        this.animationPimVermelhoPaiToA = false;
+        let posTop = 420;
+        let posRight = 830;
+        pinPaiVermelho.style.top = posTop + 'px';
+        pinPaiVermelho.style.right = posRight + 'px';
+        pinPaiVermelho.style.zIndex = '0';
+        pinPaiVermelho.style.transform = 'scaleX(-1)';
+        this.ice.pim_vermelho_pai = false;
+      }
+      if (posA){
+        // A to Ice
+        if(this.ice.position === 'A'){
+          this.animationPimVermelhoPaiToB = false;
+          this.animationPimVermelhoPaiToA = false;
+          let posTop = 420;
+          let posRight = 650;
+          pinPaiVermelho.style.top = posTop + 'px';
+          pinPaiVermelho.style.right = posRight + 'px';
+          pinPaiVermelho.style.zIndex = '3';
+          this.ice.pim_vermelho_pai = true;
+        }
+      }
+    },
+    pimFilhoVermelho(){
+      const pinFilhoVermelho = document.getElementById ('pim_vermelho_filho');
+      console.log (window.getComputedStyle (pinFilhoVermelho).top + window.getComputedStyle (pinFilhoVermelho).right)
+      const posB = window.getComputedStyle (pinFilhoVermelho).top === '460px' && window.getComputedStyle (pinFilhoVermelho).right === '40px';
+      const posIceB = window.getComputedStyle (pinFilhoVermelho).top === '470px' && (window.getComputedStyle (pinFilhoVermelho).right === '210px' || window.getComputedStyle (pinFilhoVermelho).right === '240px');
+      const posIceA = window.getComputedStyle (pinFilhoVermelho).top === '460px' && (window.getComputedStyle (pinFilhoVermelho).right === '600px' || window.getComputedStyle (pinFilhoVermelho).right === '640px');
+      const posA = window.getComputedStyle (pinFilhoVermelho).top === '460px' && window.getComputedStyle (pinFilhoVermelho).right === '820px';
+      if (posB) {
+        // B to Ice
+        if(this.ice.position === 'B') {
+          this.animationPimVermelhoFilhoToB = false;
+          this.animationPimVermelhoFilhoToA = false;
+          let posTop = 470;
+          let posRight = 210;
+          pinFilhoVermelho.style.top = posTop + 'px';
+          pinFilhoVermelho.style.right = posRight + 'px';
+          pinFilhoVermelho.style.zIndex = '3';
+          this.ice.pim_vermelho_filho = true;
+        }
+      }
+      if (posIceB) {
+        // Ice to B
+        this.animationPimVermelhoFilhoToB = false;
+        this.animationPimVermelhoFilhoToA = false;
+        let posTop = 460;
+        let posRight = 40;
+        pinFilhoVermelho.style.top = posTop + 'px';
+        pinFilhoVermelho.style.right = posRight + 'px';
+        pinFilhoVermelho.style.zIndex = '3';
+        pinFilhoVermelho.style.transform = 'scaleX(1)';
+        this.ice.pim_vermelho_filho = false;
+      }
+      if (posIceA) {
+        // Ice to A
+        this.animationPimVermelhoFilhoToB = false;
+        this.animationPimVermelhoFilhoToA = false;
+        let posTop = 460;
+        let posRight = 820;
+        pinFilhoVermelho.style.top = posTop + 'px';
+        pinFilhoVermelho.style.right = posRight + 'px';
+        pinFilhoVermelho.style.zIndex = '0';
+        pinFilhoVermelho.style.transform = 'scaleX(-1)';
+        this.ice.pim_vermelho_filho = false;
+      }
+      if (posA) {
+        // A to Ice
+        if (this.ice.position === 'A') {
+          this.animationPimVermelhoFilhoToB = false;
+          this.animationPimVermelhoFilhoToA = false;
+          let posTop = 460;
+          let posRight = 640;
+          pinFilhoVermelho.style.top = posTop + 'px';
+          pinFilhoVermelho.style.right = posRight + 'px';
+          pinFilhoVermelho.style.zIndex = '3';
+          this.ice.pim_vermelho_filho = true;
         }
       }
     }
@@ -275,6 +488,8 @@ export default defineComponent({
     const pimAzulFilho = {onIce: false, position: 'B'};
     const pimVerdePai = {onIce: false, position: 'B'};
     const pimVerdeFilho = {onIce: false, position: 'B'};
+    const pimVermelhoPai = {onIce: false, position: 'B'};
+    const pimVermelhoFilho = {onIce: false, position: 'B'};
     return{
       ice: ice,
       animationIceToA: false,
@@ -293,6 +508,13 @@ export default defineComponent({
       animationPimVerdePaiToB: false,
       animationPimVerdeFilhoToA: false,
       animationPimVerdeFilhoToB: false,
+
+      pimVermelhoPai: pimVermelhoPai,
+      pimVermelhoFilho: pimVermelhoFilho,
+      animationPimVermelhoPaiToA: false,
+      animationPimVermelhoPaiToB: false,
+      animationPimVermelhoFilhoToA: false,
+      animationPimVermelhoFilhoToB: false,
     }
   }
 
@@ -465,6 +687,42 @@ export default defineComponent({
   to {right: 270px; top: 360px}
 }
 
+.pimPaiVerdeAnimationBtoA{
+  animation: pimVerdePaiBtoA 3s forwards;
+}
+
+.pimPaiVerdeAnimationAtoB{
+  animation: pimVerdePaiAtoB 3s forwards;
+}
+
+@keyframes pimVerdePaiBtoA {
+  from {right: 230px; top: 400px}
+  to {right: 610px; top: 390px}
+}
+
+@keyframes pimVerdePaiAtoB {
+  from {right: 660px; top: 390px}
+  to {right: 280px; top: 400px}
+}
+
+.pimPaiVermelhoAnimationBtoA{
+  animation: pimVermelhoPaiBtoA 3s forwards;
+}
+
+.pimPaiVermelhoAnimationAtoB{
+  animation: pimVermelhoPaiAtoB 3s forwards;
+}
+
+@keyframes pimVermelhoPaiBtoA {
+  from {right: 200px; top: 430px}
+  to {right: 600px; top: 420px}
+}
+
+@keyframes pimVermelhoPaiAtoB {
+  from {right: 650px; top: 420px}
+  to {right: 280px; top: 430px}
+}
+
 .pimFilhoAzulAnimationBtoA{
   animation: pimAzulFilhoBtoA 3s forwards;
 }
@@ -481,5 +739,41 @@ export default defineComponent({
 @keyframes pimAzulFilhoAtoB {
   from {right: 640px; top: 400px}
   to {right: 260px; top: 410px}
+}
+
+.pimFilhoVerdeAnimationBtoA{
+  animation: pimVerdeFilhoBtoA 3s forwards;
+}
+
+.pimFilhoVerdeAnimationAtoB{
+  animation: pimVerdeFilhoAtoB 3s forwards;
+}
+
+@keyframes pimVerdeFilhoBtoA {
+  from {right: 240px; top: 440px}
+  to {right: 620px; top: 430px}
+}
+
+@keyframes pimVerdeFilhoAtoB {
+  from {right: 620px; top: 430px}
+  to {right: 240px; top: 440px}
+}
+
+.pimFilhoVermelhoAnimationBtoA{
+  animation: pimVermelhoFilhoBtoA 3s forwards;
+}
+
+.pimFilhoVermelhoAnimationAtoB{
+  animation: pimVermelhoFilhoAtoB 3s forwards;
+}
+
+@keyframes pimVermelhoFilhoBtoA {
+  from {right: 210px; top: 470px}
+  to {right: 600px; top: 460px}
+}
+
+@keyframes pimVermelhoFilhoAtoB {
+  from {right: 620px; top: 460px}
+  to {right: 240px; top: 470px}
 }
 </style>
