@@ -1,16 +1,18 @@
 <template>
   <q-layout id="full">
     <q-page id="body">
-      <div class="flex column">
-        <span style="font-family: Snow,serif; font-size: 20px">Clicks: {{clicks}}</span>
+      <div style="font-weight: bold; font-size: 18px" class="flex no-wrap column text-white" id="console">
+        <span>Lista de Abertos: <span style="color: red; font-size: 16px">{{aberto}}</span></span>
+        <span>Lista de Fechados: <span style="color: red; font-size: 16px">{{fechado}}</span> </span>
+        <span>Regra: <span style="color: red">{{regra}}</span></span>
       </div>
-      <div @click="moveIce" id="ice" :class="{iceAnimationBtoA: animationIceToA, iceAnimationAtoB: animationIceToB}"></div>
-      <div @click="pimPaiAzul" id="pim_azul_pai" :class="{pimPaiAzulAnimationBtoA: animationPimAzulPaiToA, pimPaiAzulAnimationAtoB: animationPimAzulPaiToB}"></div>
-      <div @click="pimPaiVerde" id="pim_verde_pai" :class="{pimPaiVerdeAnimationBtoA: animationPimVerdePaiToA, pimPaiVerdeAnimationAtoB: animationPimVerdePaiToB}"></div>
-      <div @click="pimPaiVermelho" id="pim_vermelho_pai" :class="{pimPaiVermelhoAnimationBtoA: animationPimVermelhoPaiToA, pimPaiVermelhoAnimationAtoB: animationPimVermelhoPaiToB}"></div>
-      <div @click="pimFilhoAzul" id="pim_azul_filho" :class="{pimFilhoAzulAnimationBtoA: animationPimAzulFilhoToA, pimFilhoAzulAnimationAtoB: animationPimAzulFilhoToB}"></div>
-      <div @click="pimFilhoVerde" id="pim_verde_filho" :class="{pimFilhoVerdeAnimationBtoA: animationPimVerdeFilhoToA, pimFilhoVerdeAnimationAtoB: animationPimVerdeFilhoToB}"></div>
-      <div @click="pimFilhoVermelho" id="pim_vermelho_filho" :class="{pimFilhoVermelhoAnimationBtoA: animationPimVermelhoFilhoToA, pimFilhoVermelhoAnimationAtoB: animationPimVermelhoFilhoToB}"></div>
+      <div id="ice" :class="{iceAnimationBtoA: animationIceToA, iceAnimationAtoB: animationIceToB}"></div>
+      <div id="pim_azul_pai" :class="{pimPaiAzulAnimationBtoA: animationPimAzulPaiToA, pimPaiAzulAnimationAtoB: animationPimAzulPaiToB}"></div>
+      <div id="pim_verde_pai" :class="{pimPaiVerdeAnimationBtoA: animationPimVerdePaiToA, pimPaiVerdeAnimationAtoB: animationPimVerdePaiToB}"></div>
+      <div id="pim_vermelho_pai" :class="{pimPaiVermelhoAnimationBtoA: animationPimVermelhoPaiToA, pimPaiVermelhoAnimationAtoB: animationPimVermelhoPaiToB}"></div>
+      <div id="pim_azul_filho" :class="{pimFilhoAzulAnimationBtoA: animationPimAzulFilhoToA, pimFilhoAzulAnimationAtoB: animationPimAzulFilhoToB}"></div>
+      <div id="pim_verde_filho" :class="{pimFilhoVerdeAnimationBtoA: animationPimVerdeFilhoToA, pimFilhoVerdeAnimationAtoB: animationPimVerdeFilhoToB}"></div>
+      <div id="pim_vermelho_filho" :class="{pimFilhoVermelhoAnimationBtoA: animationPimVermelhoFilhoToA, pimFilhoVermelhoAnimationAtoB: animationPimVermelhoFilhoToB}"></div>
     </q-page>
     <Fail id="fail" :show-dialog="failStatus" @replay="replayGame"/>
     <Winner id="winner" :show-dialog="winnerStatus" @replay="replayGame"/>
@@ -41,46 +43,10 @@ export default defineComponent({
           this.fail();
         }
         if(this.pimAzulPai.position === 'A' && this.pimVerdePai.position === 'A' && this.pimVermelhoPai.position === 'A' && this.pimAzulFilho.position === 'A' && this.pimVerdeFilho.position === 'A' && this.pimVermelhoFilho.position === 'A'){
-          console.log('ganhouuuu')
-          this.winner();
         }
       },
       deep: true,
     },
-    AStatus: {
-      handler: function (placeA){
-        if(placeA.pim_azul_filho && (placeA.pim_verde_pai || placeA.pim_vermelho_pai)){
-          console.log('A perdeuuu')
-          this.fail();
-        }
-        if(placeA.pim_verde_filho && (placeA.pim_azul_pai || placeA.pim_vermelho_pai)){
-          console.log('perdeuuu')
-          this.fail();
-        }
-        if(placeA.pim_vermelho_filho && (placeA.pim_verde_pai || placeA.pim_azul_pai)){
-          console.log('perdeuuu')
-          this.fail();
-        }
-      },
-      deep: true,
-    },
-    BStatus: {
-      handler: function (placeB){
-        if(placeB.pim_azul_filho && (placeB.pim_verde_pai || placeB.pim_vermelho_pai) && !placeB.pim_azul_pai){
-          console.log('caso 1')
-          this.fail();
-        }
-        if(placeB.pim_verde_filho && (placeB.pim_azul_pai || placeB.pim_vermelho_pai) && !placeB.pim_verde_pai){
-          console.log('caso 2')
-          this.fail();
-        }
-        if(placeB.pim_vermelho_filho && (placeB.pim_verde_pai || placeB.pim_azul_pai) && !placeB.pim_vermelho_pai){
-          console.log('caso 3')
-          this.fail();
-        }
-      },
-      deep: true,
-    }
   },
 
   computed: {
@@ -95,17 +61,164 @@ export default defineComponent({
     }
   },
 
-  mounted() {
+  async mounted() {
+    await this.sleep (4000);
+    this.aberto = this.aberto + '1,'
+    this.fechado = this.fechado + '0,'
+    await this.R7 ();
+    this.aberto = this.aberto + '2, 3, 4,'
+    await this.sleep (4000);
+    await this.R1();
+    this.aberto = this.aberto + '5, 6, 7, 8, 9, 10,'
+    this.fechado = this.fechado + '2, 3, 4,'
+    await this.sleep (4000);
+    await this.R11();
+    this.aberto = this.aberto + '11, 12, 13, 14, 15, 16,'
+    this.fechado = this.fechado + '5, 6, 7, 8, 9, 10,'
+    await this.sleep (4000);
+    await this.R3();
+    this.aberto = this.aberto + '17, 18, 19, 20, 21, 22, 23,'
+    this.fechado = this.fechado + '11, 12, 13, 14, 15, 16,'
+    await this.sleep (4000);
+    await this.R8();
+    this.aberto = this.aberto + '24, 25, 26, 27, 28, 29,'
+    this.fechado = this.fechado + '17, 18, 19, 20, 21, 22, 23,'
+    await this.sleep (4000);
+    this.pimFilhoVermelho ();
+    await this.R1();
+    this.aberto = this.aberto + '30, 31, 32,'
+    this.fechado = this.fechado + '24, 25, 26, 27, 28, 29,'
+    await this.sleep (4000);
+    await this.R11();
+    this.aberto = this.aberto + '33, 34, 35, 36, 37, 38'
+    this.fechado = this.fechado + '30, 31, 32,'
+    await this.sleep (4000);
+    await this.R3();
+    this.aberto = this.aberto + '39, 40, 41,'
+    this.fechado = this.fechado + '33, 34, 35, 36, 37, 38'
+    await this.sleep (4000);
+    await this.R9();
+    this.aberto = this.aberto + '42, 43, 44, 45'
+    this.fechado = this.fechado + '39, 40, 41'
   },
 
   methods: {
 
-    winner(){
-      this.winnerStatus = true;
+    async R1() {
+      this.regra = this.regra + 'R1, ';
+      await this.sleep(1000);
+      this.moveIce ();
     },
 
-    fail(){
-      this.failStatus = true;
+    async R2() {
+      this.regra = this.regra + 'R2, ';
+      this.pimFilhoVerde ();
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(3000);
+      this.pimFilhoVerde ();
+    },
+
+    async R3() {
+      this.regra = this.regra + 'R3, ';
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(3000);
+      this.pimFilhoAzul();
+    },
+
+    async R4() {
+      this.regra = this.regra + 'R4, ';
+      this.pimPaiVermelho();
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(3000);
+      this.pimPaiVermelho();
+    },
+
+    async R5() {
+      this.regra = this.regra + 'R5, ';
+      this.pimPaiVerde();
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(3000);
+      this.pimPaiVerde();
+    },
+
+    async R6() {
+      this.regra = this.regra + 'R6, ';
+      this.pimPaiAzul();
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(3000);
+      this.pimPaiAzul();
+    },
+
+    async R7() {
+      this.regra = this.regra + 'R7, ';
+      this.pimPaiVermelho();
+      this.pimFilhoVermelho ();
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(3000);
+      this.pimPaiVermelho();
+    },
+
+    async R8() {
+      this.regra = this.regra + 'R8, ';
+      this.pimPaiVerde();
+      this.pimFilhoVerde ();
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(4000);
+      this.pimPaiVerde();
+      this.pimFilhoVerde ();
+    },
+
+    async R9() {
+      this.regra = this.regra + 'R9, ';
+      this.pimPaiAzul();
+      this.pimFilhoAzul ();
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(4000);
+      this.pimPaiAzul();
+      this.pimFilhoAzul ();
+    },
+
+    async R10() {
+      this.regra = this.regra + 'R10, ';
+      this.pimFilhoAzul();
+      this.pimFilhoVerde();
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(3000);
+      this.pimFilhoAzul();
+      this.pimFilhoVerde ();
+    },
+
+    async R11() {
+      this.regra = this.regra + 'R11, ';
+      this.pimFilhoAzul();
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(4000);
+      this.pimFilhoVermelho ();
+    },
+
+    async R12() {
+      this.regra = this.regra + 'R12, ';
+      this.pimFilhoVerde();
+      this.pimFilhoVermelho();
+      await this.sleep(1000);
+      this.moveIce ();
+      await this.sleep(3000);
+      this.pimFilhoVerde();
+      this.pimFilhoVermelho ();
+    },
+
+    sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
     },
 
     checkPimOnIce(){
@@ -119,7 +232,6 @@ export default defineComponent({
     },
 
     moveIce(){
-      this.clicks= this.clicks + 1;
       const ice = document.getElementById('ice');
       const posB = window.getComputedStyle(ice).right === '170px';
       const posA = window.getComputedStyle(ice).right === '555px';
@@ -730,10 +842,10 @@ export default defineComponent({
 
       failStatus: failStatus,
       winnerStatus: winnerStatus,
-      clicks: clicks,
       tempo: tempo,
-
-      map: map
+      regra: '',
+      aberto: '',
+      fechado: ''
     }
   }
 
@@ -741,6 +853,14 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+#console{
+  width: 1000px;
+  height: 230px;
+  border: 50px solid transparent;
+  border-image: url("src/assets/aaa.png") 40% round ;
+}
+
 #full{
   background-color: #3291d5;
 }
@@ -765,11 +885,11 @@ export default defineComponent({
 
 
 .iceAnimationBtoA{
-  animation: iceBtoA 3s forwards;
+  animation: iceBtoA 1s forwards;
 }
 
 .iceAnimationAtoB{
-  animation: iceAtoB 3s forwards;
+  animation: iceAtoB 1s forwards;
 }
 
 #ice:hover {
@@ -898,11 +1018,11 @@ export default defineComponent({
 }
 
 .pimPaiAzulAnimationBtoA{
-  animation: pimAzulPaiBtoA 3s forwards;
+  animation: pimAzulPaiBtoA 1s forwards;
 }
 
 .pimPaiAzulAnimationAtoB{
-  animation: pimAzulPaiAtoB 3s forwards;
+  animation: pimAzulPaiAtoB 1s forwards;
 }
 
 @keyframes pimAzulPaiBtoA {
@@ -916,11 +1036,11 @@ export default defineComponent({
 }
 
 .pimPaiVerdeAnimationBtoA{
-  animation: pimVerdePaiBtoA 3s forwards;
+  animation: pimVerdePaiBtoA 1s forwards;
 }
 
 .pimPaiVerdeAnimationAtoB{
-  animation: pimVerdePaiAtoB 3s forwards;
+  animation: pimVerdePaiAtoB 1s forwards;
 }
 
 @keyframes pimVerdePaiBtoA {
@@ -934,11 +1054,11 @@ export default defineComponent({
 }
 
 .pimPaiVermelhoAnimationBtoA{
-  animation: pimVermelhoPaiBtoA 3s forwards;
+  animation: pimVermelhoPaiBtoA 1s forwards;
 }
 
 .pimPaiVermelhoAnimationAtoB{
-  animation: pimVermelhoPaiAtoB 3s forwards;
+  animation: pimVermelhoPaiAtoB 1s forwards;
 }
 
 @keyframes pimVermelhoPaiBtoA {
@@ -952,11 +1072,11 @@ export default defineComponent({
 }
 
 .pimFilhoAzulAnimationBtoA{
-  animation: pimAzulFilhoBtoA 3s forwards;
+  animation: pimAzulFilhoBtoA 1s forwards;
 }
 
 .pimFilhoAzulAnimationAtoB{
-  animation: pimAzulFilhoAtoB 3s forwards;
+  animation: pimAzulFilhoAtoB 1s forwards;
 }
 
 @keyframes pimAzulFilhoBtoA {
@@ -970,11 +1090,11 @@ export default defineComponent({
 }
 
 .pimFilhoVerdeAnimationBtoA{
-  animation: pimVerdeFilhoBtoA 3s forwards;
+  animation: pimVerdeFilhoBtoA 1s forwards;
 }
 
 .pimFilhoVerdeAnimationAtoB{
-  animation: pimVerdeFilhoAtoB 3s forwards;
+  animation: pimVerdeFilhoAtoB 1s forwards;
 }
 
 @keyframes pimVerdeFilhoBtoA {
@@ -988,11 +1108,11 @@ export default defineComponent({
 }
 
 .pimFilhoVermelhoAnimationBtoA{
-  animation: pimVermelhoFilhoBtoA 3s forwards;
+  animation: pimVermelhoFilhoBtoA 1s forwards;
 }
 
 .pimFilhoVermelhoAnimationAtoB{
-  animation: pimVermelhoFilhoAtoB 3s forwards;
+  animation: pimVermelhoFilhoAtoB 1s forwards;
 }
 
 @keyframes pimVermelhoFilhoBtoA {
