@@ -103,6 +103,7 @@ export default defineComponent({
     this.fechado = this.fechado + '28, '
     await this.sleep (4000);
     await this.R3();
+    this.pimFilhoAzul()
     this.aberto = this.aberto + '36, 37, 38, '
     this.fechado = this.fechado + '29, 30, 31 '
     await this.sleep (4000);
@@ -137,7 +138,7 @@ export default defineComponent({
       await this.sleep(1000);
       this.moveIce ();
       await this.sleep(3000);
-      this.pimFilhoAzul();
+      // this.pimFilhoAzul();
     },
 
     async R4() {
@@ -213,7 +214,7 @@ export default defineComponent({
 
     async R11() {
       this.regra = this.regra + 'R11, ';
-      this.pimFilhoAzul();
+      // this.pimFilhoAzul();
       this.pimFilhoVermelho ();
       await this.sleep(1000);
       this.moveIce ();
