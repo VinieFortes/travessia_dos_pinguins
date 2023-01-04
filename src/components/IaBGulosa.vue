@@ -63,60 +63,47 @@ export default defineComponent({
 
   async mounted() {
     await this.sleep (4000);
-    this.aberto = this.aberto + '1,'
+    this.aberto = this.aberto + '6, 7, 8, 3, 11, 14, 15, 16, 10, '
     this.fechado = this.fechado + '0,'
     await this.R9 ();
-    this.aberto = this.aberto + '2, 3, 4, 5, 6, '
+    this.aberto = this.aberto + '18, 19, 20, '
     await this.sleep (4000);
     this.pimFilhoAzul();
     await this.R3();
-    this.aberto = this.aberto + '7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, '
-    this.fechado = this.fechado + '9, 11, 12, 16, '
-    await this.sleep (4000);
-    await this.R11();
-    this.aberto = this.aberto + '18, 19, '
-    this.fechado = this.fechado + '15, 14, '
-    await this.sleep (4000);
-    await this.R1();
-    this.aberto = this.aberto + '20, '
-    this.fechado = this.fechado + '13, 10,'
-    await this.sleep (4000);
-    await this.R8();
-    this.aberto = this.aberto + '21, 22,'
-    this.fechado = this.fechado + '8, 7, 6, 17, 19, 20,'
-    await this.sleep (4000);
-    this.pimFilhoVermelho ();
-    await this.R9();
-    this.aberto = this.aberto + '23, 24, 25,'
-    this.fechado = this.fechado + '22, '
-    await this.sleep (4000);
-    await this.R7();
-    this.aberto = this.aberto + '27, 28, '
-    this.fechado = this.fechado + '25,'
-    await this.sleep (4000);
-    await this.R2();
-    this.aberto = this.aberto + '29, 30,'
-    this.fechado = this.fechado + '28, '
+    this.fechado = this.fechado + '6, 7, 8, 3, 11, 14, 15, 16, '
     await this.sleep (4000);
     await this.R10();
-    this.aberto = this.aberto + '31, 32, 33, 34, 35, '
-    this.fechado = this.fechado + '28, '
+    this.aberto = this.aberto + '22, '
+    this.fechado = this.fechado + '18, 19, 20 '
     await this.sleep (4000);
-    await this.R3();
-    this.pimFilhoAzul()
-    this.aberto = this.aberto + '36, 37, 38, '
-    this.fechado = this.fechado + '29, 30, 31 '
+    await this.R2();
+    this.pimFilhoVerde ()
+    this.aberto = this.aberto + '23,  '
+    this.fechado = this.fechado + '22, '
     await this.sleep (4000);
-    await this.R9();
-    this.aberto = this.aberto + '40, 41, 42 '
-    this.fechado = this.fechado + '32, 33, 34, 35 '
-
+    await this.R8();
+    this.aberto = this.aberto + '26, '
+    this.fechado = this.fechado + '23, '
+    await this.sleep (4000);
+    this.pimFilhoVerde ();
+    await this.R2();
+    this.aberto = this.aberto + '27, '
+    this.fechado = this.fechado + '26, '
+    await this.sleep (4000);
+    await this.R12();
+    this.aberto = this.aberto + '29, '
+    this.fechado = this.fechado + '27,'
+    await this.sleep (4000);
+    await this.R1();
+    await this.sleep (4000);
+    await this.R7();
   },
 
   methods: {
 
     async R1() {
       this.regra = this.regra + 'R1, ';
+      // this.pimFilhoVermelho();
       await this.sleep(1000);
       this.moveIce ();
       await this.sleep(3000);
@@ -125,7 +112,7 @@ export default defineComponent({
 
     async R2() {
       this.regra = this.regra + 'R2, ';
-      this.pimFilhoVerde ();
+      // this.pimFilhoVerde ();
       await this.sleep(1000);
       this.moveIce ();
       await this.sleep(3000);
@@ -203,13 +190,13 @@ export default defineComponent({
 
     async R10() {
       this.regra = this.regra + 'R10, ';
-      this.pimFilhoAzul();
-      // this.pimFilhoVerde();
+      // this.pimFilhoAzul();
+      this.pimFilhoVerde();
       await this.sleep(1000);
       this.moveIce ();
       await this.sleep(3000);
-      // this.pimFilhoAzul();
-      this.pimFilhoVerde ();
+      this.pimFilhoAzul();
+      // this.pimFilhoVerde ();
     },
 
     async R11() {
@@ -224,13 +211,13 @@ export default defineComponent({
 
     async R12() {
       this.regra = this.regra + 'R12, ';
-      this.pimFilhoVerde();
+      // this.pimFilhoVerde();
       this.pimFilhoVermelho();
       await this.sleep(1000);
       this.moveIce ();
       await this.sleep(3000);
       this.pimFilhoVerde();
-      this.pimFilhoVermelho ();
+      // this.pimFilhoVermelho ();
     },
 
     sleep(ms) {

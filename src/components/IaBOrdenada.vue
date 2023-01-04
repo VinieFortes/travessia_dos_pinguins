@@ -63,56 +63,57 @@ export default defineComponent({
 
   async mounted() {
     await this.sleep (4000);
-    this.aberto = this.aberto + '1,'
+    this.aberto = this.aberto + '1, 2, 3, 4, 5, '
     this.fechado = this.fechado + '0,'
     await this.R7 ();
-    this.aberto = this.aberto + '2, 3, 4,'
+    this.aberto = this.aberto + '10, '
+    this.fechado = this.fechado + '1, 2, 3, '
     await this.sleep (4000);
     await this.R1();
-    this.aberto = this.aberto + '5, 6, 7, 8, 9, 10,'
-    this.fechado = this.fechado + '2, 3, 4,'
+    this.aberto = this.aberto + '6, 12, 7, 11, 8, 9, 16, 13, 17, 14 '
+    this.fechado = this.fechado + '4, 5, 10, '
     await this.sleep (4000);
     await this.R11();
-    this.aberto = this.aberto + '11, 12, 13, 14, 15, 16,'
-    this.fechado = this.fechado + '5, 6, 7, 8, 9, 10,'
+    this.aberto = this.aberto + '15, 18, 20, 19, 25, 21, 23, '
+    this.fechado = this.fechado + '6, 12, 7, 8, 9, 16, 13, 17, 14, '
     await this.sleep (4000);
     await this.R3();
-    this.aberto = this.aberto + '17, 18, 19, 20, 21, 22, 23,'
-    this.fechado = this.fechado + '11, 12, 13, 14, 15, 16,'
-    await this.sleep (4000);
-    await this.R8();
-    this.aberto = this.aberto + '24, 25, 26, 27, 28, 29,'
-    this.fechado = this.fechado + '17, 18, 19, 20, 21, 22, 23,'
-    await this.sleep (4000);
-    this.pimFilhoVermelho ();
-    await this.R1();
-    this.aberto = this.aberto + '30, 31, 32,'
-    this.fechado = this.fechado + '24, 25, 26, 27, 28, 29,'
-    await this.sleep (4000);
-    await this.R11();
-    this.aberto = this.aberto + '33, 34, 35, 36, 37, 38'
-    this.fechado = this.fechado + '30, 31, 32,'
-    await this.sleep (4000);
-    await this.R3();
-    this.aberto = this.aberto + '39, 40, 41,'
-    this.fechado = this.fechado + '33, 34, 35, 36, 37, 38'
+    this.aberto = this.aberto + '26, 22, 24, 28, 27, 29, 30, '
+    this.fechado = this.fechado + '15, 18, 20, 19, 25, 21, 23,'
     await this.sleep (4000);
     await this.R9();
-    this.aberto = this.aberto + '42, 43, 44, 45'
-    this.fechado = this.fechado + '39, 40, 41'
+    this.aberto = this.aberto + '32, 33, 31, 34, '
+    this.fechado = this.fechado + '26, 22, 24, 28, 27, 29, 30, '
+    await this.sleep (4000);
+    await this.R1();
+    this.aberto = this.aberto + '35, 37, 38, 36, 39, '
+    this.fechado = this.fechado + '32, 33, 31, 34, '
+    await this.sleep (4000);
+    await this.R12();
+    this.aberto = this.aberto + '41, 40, 42, '
+    this.fechado = this.fechado + '35, 37, 38, 36, 39, '
+    await this.sleep (4000);
+    await this.R2();
+    this.aberto = this.aberto + '45, 43, 46, 48, 50, 53, 51, 47'
+    this.fechado = this.fechado + '41, 40, 42, '
+    await this.sleep (4000);
+    await this.R8();
+    this.fechado = this.fechado + '45, 43, 46, 48, 50, 53, 51, 47'
   },
 
   methods: {
 
     async R1() {
       this.regra = this.regra + 'R1, ';
+      this.pimFilhoVermelho();
       await this.sleep(1000);
       this.moveIce ();
+      await this.sleep(3000);
     },
 
     async R2() {
       this.regra = this.regra + 'R2, ';
-      this.pimFilhoVerde ();
+      // this.pimFilhoVerde ();
       await this.sleep(1000);
       this.moveIce ();
       await this.sleep(3000);
@@ -121,6 +122,7 @@ export default defineComponent({
 
     async R3() {
       this.regra = this.regra + 'R3, ';
+      // this.pimFilhoAzul();
       await this.sleep(1000);
       this.moveIce ();
       await this.sleep(3000);
@@ -162,6 +164,7 @@ export default defineComponent({
       this.moveIce ();
       await this.sleep(3000);
       this.pimPaiVermelho();
+      this.pimFilhoVermelho ();
     },
 
     async R8() {
@@ -189,31 +192,32 @@ export default defineComponent({
     async R10() {
       this.regra = this.regra + 'R10, ';
       this.pimFilhoAzul();
-      this.pimFilhoVerde();
+      // this.pimFilhoVerde();
       await this.sleep(1000);
       this.moveIce ();
       await this.sleep(3000);
-      this.pimFilhoAzul();
+      // this.pimFilhoAzul();
       this.pimFilhoVerde ();
     },
 
     async R11() {
       this.regra = this.regra + 'R11, ';
       this.pimFilhoAzul();
+      // this.pimFilhoVermelho ();
       await this.sleep(1000);
       this.moveIce ();
       await this.sleep(4000);
-      this.pimFilhoVermelho ();
+      this.pimFilhoVermelho();
     },
 
     async R12() {
       this.regra = this.regra + 'R12, ';
       this.pimFilhoVerde();
-      this.pimFilhoVermelho();
+      // this.pimFilhoVermelho();
       await this.sleep(1000);
       this.moveIce ();
       await this.sleep(3000);
-      this.pimFilhoVerde();
+      // this.pimFilhoVerde();
       this.pimFilhoVermelho ();
     },
 
@@ -323,64 +327,64 @@ export default defineComponent({
     },
 
     pimPaiAzul(){
-     this.clicks= this.clicks + 1;
-     const pinPaiAzul = document.getElementById('pim_azul_pai');
-     console.log(window.getComputedStyle(pinPaiAzul).top + window.getComputedStyle(pinPaiAzul).right)
-     const posB = window.getComputedStyle(pinPaiAzul).top === '350px' && window.getComputedStyle(pinPaiAzul).right === '150px';
-     const posIceB = window.getComputedStyle(pinPaiAzul).top === '360px' && window.getComputedStyle(pinPaiAzul).right === '270px';
-     const posIceA = window.getComputedStyle(pinPaiAzul).top === '350px' && window.getComputedStyle(pinPaiAzul).right === '650px';
-     const posA = window.getComputedStyle(pinPaiAzul).top === '330px' && window.getComputedStyle(pinPaiAzul).right === '750px';
-     if (posB){
-       // B to Ice
-       if(this.ice.position === 'B' && (this.checkPimOnIce() < 2)){
-         this.animationPimAzulPaiToB = false;
-         this.animationPimAzulPaiToA = false;
-         let posTop = 360;
-         let posRight = 270;
-         pinPaiAzul.style.top = posTop + 'px';
-         pinPaiAzul.style.right = posRight + 'px';
-         pinPaiAzul.style.zIndex = '1';
-         this.ice.pim_azul_pai = true;
+      this.clicks= this.clicks + 1;
+      const pinPaiAzul = document.getElementById('pim_azul_pai');
+      console.log(window.getComputedStyle(pinPaiAzul).top + window.getComputedStyle(pinPaiAzul).right)
+      const posB = window.getComputedStyle(pinPaiAzul).top === '350px' && window.getComputedStyle(pinPaiAzul).right === '150px';
+      const posIceB = window.getComputedStyle(pinPaiAzul).top === '360px' && window.getComputedStyle(pinPaiAzul).right === '270px';
+      const posIceA = window.getComputedStyle(pinPaiAzul).top === '350px' && window.getComputedStyle(pinPaiAzul).right === '650px';
+      const posA = window.getComputedStyle(pinPaiAzul).top === '330px' && window.getComputedStyle(pinPaiAzul).right === '750px';
+      if (posB){
+        // B to Ice
+        if(this.ice.position === 'B' && (this.checkPimOnIce() < 2)){
+          this.animationPimAzulPaiToB = false;
+          this.animationPimAzulPaiToA = false;
+          let posTop = 360;
+          let posRight = 270;
+          pinPaiAzul.style.top = posTop + 'px';
+          pinPaiAzul.style.right = posRight + 'px';
+          pinPaiAzul.style.zIndex = '1';
+          this.ice.pim_azul_pai = true;
 
-         //set position
-         this.placeA.pim_azul_pai = false;
-         this.placeB.pim_azul_pai = false;
-       }
-     }
-     if(posIceB) {
-       // Ice to B
-       this.animationPimAzulPaiToB = false;
-       this.animationPimAzulPaiToA = false;
-       let posTop = 350;
-       let posRight = 150;
-       pinPaiAzul.style.top = posTop + 'px';
-       pinPaiAzul.style.right = posRight + 'px';
-       pinPaiAzul.style.zIndex = '0';
-       pinPaiAzul.style.transform = 'scaleX(1)';
-       this.ice.pim_azul_pai = false;
+          //set position
+          this.placeA.pim_azul_pai = false;
+          this.placeB.pim_azul_pai = false;
+        }
+      }
+      if(posIceB) {
+        // Ice to B
+        this.animationPimAzulPaiToB = false;
+        this.animationPimAzulPaiToA = false;
+        let posTop = 350;
+        let posRight = 150;
+        pinPaiAzul.style.top = posTop + 'px';
+        pinPaiAzul.style.right = posRight + 'px';
+        pinPaiAzul.style.zIndex = '0';
+        pinPaiAzul.style.transform = 'scaleX(1)';
+        this.ice.pim_azul_pai = false;
 
-       // set position
-       this.pimAzulPai.position = 'B';
-       this.placeA.pim_azul_pai = false;
-       this.placeB.pim_azul_pai = true;
-     }
-     if(posIceA){
-       // Ice to A
-       this.animationPimAzulPaiToB = false;
-       this.animationPimAzulPaiToA = false;
-       let posTop = 330;
-       let posRight = 750;
-       pinPaiAzul.style.top = posTop + 'px';
-       pinPaiAzul.style.right = posRight + 'px';
-       pinPaiAzul.style.zIndex = '0';
-       pinPaiAzul.style.transform = 'scaleX(-1)';
-       this.ice.pim_azul_pai = false;
+        // set position
+        this.pimAzulPai.position = 'B';
+        this.placeA.pim_azul_pai = false;
+        this.placeB.pim_azul_pai = true;
+      }
+      if(posIceA){
+        // Ice to A
+        this.animationPimAzulPaiToB = false;
+        this.animationPimAzulPaiToA = false;
+        let posTop = 330;
+        let posRight = 750;
+        pinPaiAzul.style.top = posTop + 'px';
+        pinPaiAzul.style.right = posRight + 'px';
+        pinPaiAzul.style.zIndex = '0';
+        pinPaiAzul.style.transform = 'scaleX(-1)';
+        this.ice.pim_azul_pai = false;
 
-       // set position
-       this.pimAzulPai.position = 'A';
-       this.placeA.pim_azul_pai = true;
-       this.placeB.pim_azul_pai = false;
-     }
+        // set position
+        this.pimAzulPai.position = 'A';
+        this.placeA.pim_azul_pai = true;
+        this.placeB.pim_azul_pai = false;
+      }
       if (posA){
         // A to Ice
         if(this.ice.position === 'A'  && (this.checkPimOnIce() < 2)){

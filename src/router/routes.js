@@ -10,15 +10,15 @@ const routes = [
   },
   {
     path: '/ia_bl',
-    component: () => import('components/IaBL.vue')
+    component: () => import('components/IaBAstar.vue')
   },
   {
     path: '/ia_bp',
-    component: () => import('components/IaBP.vue')
+    component: () => import('components/IaBGulosa.vue')
   },
   {
     path: '/ia_bback',
-    component: () => import('components/IaBBack.vue')
+    component: () => import('components/IaBOrdenada.vue')
   },
 ]
 
