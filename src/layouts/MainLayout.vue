@@ -49,15 +49,15 @@ export default defineComponent({
     },
     AStatus: {
       handler: function (placeA){
-        if(placeA.pim_azul_filho && (placeA.pim_verde_pai || placeA.pim_vermelho_pai)){
+        if((placeA.pim_azul_filho && !placeA.pim_azul_pai) && (placeA.pim_verde_pai || placeA.pim_vermelho_pai)){
           console.log('A perdeuuu')
           this.fail();
         }
-        if(placeA.pim_verde_filho && (placeA.pim_azul_pai || placeA.pim_vermelho_pai)){
+        if((placeA.pim_verde_filho && !placeA.pim_verde_pai) && (placeA.pim_azul_pai || placeA.pim_vermelho_pai)){
           console.log('perdeuuu')
           this.fail();
         }
-        if(placeA.pim_vermelho_filho && (placeA.pim_verde_pai || placeA.pim_azul_pai)){
+        if((placeA.pim_vermelho_filho && !placeA.pim_vermelho_pai) && (placeA.pim_verde_pai || placeA.pim_azul_pai)){
           console.log('perdeuuu')
           this.fail();
         }
